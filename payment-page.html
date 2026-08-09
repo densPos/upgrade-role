@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pembayaran — Toolkit</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="payment.css">
+</head>
+<body>
+
+  <!-- QRIS ZOOM MODAL -->
+  <div class="qris-modal-overlay" id="qrisModal">
+    <div class="qris-modal-content">
+      <button class="qris-modal-close" id="qrisModalClose">✕</button>
+      <img class="qris-modal-image" id="qrisModalImage" src="" alt="QRIS Pembayaran">
+      <div class="qris-modal-label">Scan QRIS untuk pembayaran</div>
+    </div>
+  </div>
+
+  <!-- NAV HEADER -->
+  <nav class="nav">
+    <a href="#" class="nav-logo">Toolkit</a>
+    <a href="#" class="btn btn-outline btn-back">← Kembali</a>
+  </nav>
+
+  <!-- MAIN CONTAINER -->
+  <main class="pay-wrap">
+    <div class="pay-head">
+      <span class="eyebrow">Checkout</span>
+      <h1>Selesaikan pembayaran</h1>
+      <p class="pay-sub">Pilih role, durasi, dan metode bayar. Total dihitung otomatis.</p>
+    </div>
+
+    <!-- STEP INDICATOR -->
+    <ol class="steps">
+      <li class="step is-active" id="step-indicator-1">
+        <span class="step-num">1</span>
+        <span>Role</span>
+      </li>
+      <li class="step" id="step-indicator-2">
+        <span class="step-num">2</span>
+        <span>Durasi</span>
+      </li>
+      <li class="step" id="step-indicator-3">
+        <span class="step-num">3</span>
+        <span>Bayar</span>
+      </li>
+      <li class="step" id="step-indicator-4">
+        <span class="step-num">4</span>
+        <span>Konfirmasi</span>
+      </li>
+    </ol>
+
+    <!-- STEP 1: PILIH ROLE -->
+    <section class="pay-section is-active" id="section-1">
+      <h2 class="pay-section-title">Pilih role</h2>
+      <div class="role-grid">
+        <!-- VIP Card -->
+        <label class="role-card role-card-vip">
+          <input type="radio" name="role" value="vip" data-price="29000">
+          <div class="role-card-top">
+            <div class="card-icon card-icon-vip">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 4l3 12h14l3-12-6 7-4-5-4 5-6-7z"/></svg>
+            </div>
+            <div class="role-bubble">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+          </div>
+          <div class="role-name">VIP</div>
+          <div class="role-desc">Semua tools tanpa batasan, bebas iklan, proses lebih cepat.</div>
+          <div class="role-base-price">Rp29.000<span>/bulan</span></div>
+        </label>
+
+        <!-- Moderator Card -->
+        <label class="role-card role-card-mod">
+          <input type="radio" name="role" value="moderator" data-price="79000">
+          <div class="role-card-top">
+            <div class="card-icon card-icon-mod">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+            </div>
+            <div class="role-bubble">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+          </div>
+          <div class="role-name">Moderator</div>
+          <div class="role-desc">Semua fitur VIP + akses panel moderasi dan komunitas.</div>
+          <div class="role-base-price">Rp79.000<span>/bulan</span></div>
+        </label>
+      </div>
+
+      <div class="pay-actions">
+        <button type="button" class="btn btn-primary" id="btn-to-step-2" disabled>Lanjut →</button>
+      </div>
+    </section>
+
+    <!-- STEP 2: PILIH DURASI -->
+    <section class="pay-section" id="section-2">
+      <h2 class="pay-section-title">Pilih durasi berlangganan</h2>
+      <div class="duration-grid">
+        <label class="duration-card">
+          <input type="radio" name="duration" value="1" checked>
+          <div class="duration-name">1 Bulan</div>
+          <div class="duration-desc">Harga Normal</div>
+        </label>
+        <label class="duration-card">
+          <input type="radio" name="duration" value="3">
+          <div class="duration-name">3 Bulan</div>
+          <div class="duration-desc">Hemat 10%</div>
+        </label>
+        <label class="duration-card">
+          <input type="radio" name="duration" value="12">
+          <div class="duration-name">12 Bulan</div>
+          <div class="duration-desc">Hemat 25%</div>
+        </label>
+      </div>
+
+      <!-- Live Total Preview -->
+      <div class="price-preview">
+        <span class="price-preview-label">Total Pembayaran:</span>
+        <span class="price-preview-value" id="preview-total-price">Rp0</span>
+      </div>
+
+      <div class="pay-actions">
+        <button type="button" class="btn btn-outline" id="btn-back-to-1">← Kembali</button>
+        <button type="button" class="btn btn-primary" id="btn-to-step-3">Lanjut →</button>
+      </div>
+    </section>
+
+    <!-- STEP 3: METODE PEMBAYARAN -->
+    <section class="pay-section" id="section-3">
+      <h2 class="pay-section-title">Pilih metode pembayaran</h2>
+      <div class="method-grid">
+        <label class="method-card">
+          <input type="radio" name="method" value="qris" checked>
+          <div class="method-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          </div>
+          <div>
+            <span class="method-name">QRIS All Payment</span>
+            <span class="method-desc">GoPay, OVO, Dana, ShopeePay, BCA, dll</span>
+          </div>
+        </label>
+
+        <label class="method-card">
+          <input type="radio" name="method" value="transfer">
+          <div class="method-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+          </div>
+          <div>
+            <span class="method-name">Transfer Bank (BCA)</span>
+            <span class="method-desc">Transfer manual melalui ATM / m-Banking</span>
+          </div>
+        </label>
+      </div>
+
+      <div class="pay-actions">
+        <button type="button" class="btn btn-outline" id="btn-back-to-2">← Kembali</button>
+        <button type="button" class="btn btn-primary" id="btn-to-step-4">Bayar Sekarang →</button>
+      </div>
+    </section>
+
+    <!-- STEP 4: INSTRUKSI BAYAR & KONFIRMASI -->
+    <section class="pay-section" id="section-4">
+      <h2 class="pay-section-title">Instruksi Pembayaran</h2>
+
+      <!-- Summary Box -->
+      <div class="summary-card">
+        <div class="summary-row">
+          <span>Role Dipilih</span>
+          <strong id="summary-role-text">-</strong>
+        </div>
+        <div class="summary-row">
+          <span>Durasi Paket</span>
+          <strong id="summary-duration-text">-</strong>
+        </div>
+        <div class="summary-row summary-total">
+          <span>Total Harus Dibayar</span>
+          <strong id="summary-total-text">Rp0</strong>
+        </div>
+      </div>
+
+      <!-- Payment Detail (QRIS / Bank) -->
+      <div class="pay-detail-box">
+        <!-- Box QRIS -->
+        <div id="qris-payment-details" class="qris-box">
+          <p class="pay-detail-text">Scan QRIS di bawah ini menggunakan aplikasi M-Banking atau E-Wallet kamu:</p>
+          <div class="qris-wrapper">
+            <img id="qrisImg" src="image/qris.png" alt="Kode QRIS Pembayaran" class="qris-image">
+            <div style="display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;">
+              <a id="downloadQrisBtn" href="assets/qris.png" download="QRIS-Pembayaran-Toolkit.png" class="btn-download-qris">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Download QRIS
+              </a>
+              <button id="zoomQrisBtn" class="btn-download-qris" style="background: var(--primary); color: white; border-color: var(--primary);">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                Perbesar QRIS
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Box Transfer BCA -->
+        <div id="bank-payment-details" class="rekening-wrapper" style="display: none;">
+          <div class="pay-detail-title">Transfer ke Rekening BCA:</div>
+          <div class="rekening-box">
+            <div class="rekening-info">
+              <span class="rekening-label">Bank BCA (a.n. Toolkit Official)</span>
+              <span class="rekening-number" id="norek-text">1234567890</span>
+            </div>
+            <button type="button" class="btn-copy" id="btn-copy-rek">Salin No. Rek</button>
+          </div>
+          <p class="pay-detail-text">Pastikan transfer nominal sesuai dengan **Total Harus Dibayar** di atas.</p>
+        </div>
+      </div>
+
+      <!-- Upload Bukti Transfer -->
+      <div class="upload-box">
+        <label class="upload-label">Upload Bukti Transfer / Pembayaran:</label>
+        <label class="upload-dropzone" id="dropzone">
+          <input type="file" id="file-input" accept="image/*" style="display: none;">
+          <svg class="upload-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          <span class="upload-text" id="upload-text">Klik atau seret foto bukti bayar ke sini</span>
+          <span class="upload-hint">Format PNG, JPG, JPEG (Maks. 5MB)</span>
+        </label>
+        <img id="upload-preview" class="upload-preview" style="display: none;" alt="Preview Bukti">
+      </div>
+
+      <!-- Kirim via WA -->
+      <div class="wa-box">
+        <div class="wa-title">Konfirmasi Otomatis via WhatsApp</div>
+        <div class="wa-text">Klik tombol di bawah ini untuk mengirimkan rincian pesanan dan bukti bayar langsung ke CS Admin kami.</div>
+        <a href="#" id="btn-wa-confirm" class="btn-wa" target="_blank">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
+          Konfirmasi via WhatsApp
+        </a>
+      </div>
+
+      <div class="pay-actions">
+        <button type="button" class="btn btn-outline" id="btn-back-to-3">← Kembali</button>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    Toolkit <span class="footer-sep">·</span> Semua tools, satu tempat.
+  </footer>
+
+  <!-- JS -->
+  <script src="payment.js"></script>
+</body>
+</html>
